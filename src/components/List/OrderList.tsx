@@ -1,40 +1,8 @@
 "use client";
 import { useTableId } from "@/context/tableContext";
-import { getStatusClass } from "@/lib/utils";
+
 import Image from "next/image";
 import * as React from "react";
-
-const MachineName = ({ name, id }: MachineNameProps) => (
-  <td className="w-[20px] mb-2">
-    <span>{name}</span>
-    <span className="text-stone-400">({id})</span>
-  </td>
-);
-
-const Amount = ({ amount }: AmountProps) => (
-  <td className="flex gap-0 w-[20px] mb-2">
-    <Image
-      src="/rupee.png"
-      width={26}
-      height={26}
-      className="shrink-0  "
-      alt=""
-    />
-    <span>{amount}</span>
-  </td>
-);
-
-const Status = ({ status }: StatusProps) => (
-  <td className="mb-2">
-    <span
-      className={`flex font-bold  justify-center items-start px-1 py-1.5 uppercase whitespace-nowrap border ${getStatusClass(
-        status
-      )}  rounded-[32px]`}
-    >
-      {status}
-    </span>
-  </td>
-);
 
 const orders: Order[] = [
   {
@@ -149,6 +117,55 @@ const orders: Order[] = [
     status: "SUCCESS",
   },
 ];
+
+const MachineName = ({ name, id }: MachineNameProps) => (
+  <td className="w-[20px] mb-2">
+    <span>{name}</span>
+    <span className="text-stone-400">({id})</span>
+  </td>
+);
+
+const Amount = ({ amount }: AmountProps) => (
+  <td className="flex gap-0 w-[20px] mb-2">
+    <Image
+      src="/rupee.png"
+      width={26}
+      height={26}
+      className="shrink-0  "
+      alt=""
+    />
+    <span>{amount}</span>
+  </td>
+);
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case "SUCCESS":
+      return "border-green-500 text-green-500";
+    case "FAILURE":
+      return "border-red-500 text-red-500";
+    case "PENDING":
+      return "border-yellow-500 text-yellow-400";
+    case "SENT":
+      return "border-orange-500 text-amber-600";
+    case "REFUND INITIATED":
+      return "border-blue-800 text-indigo-800";
+    case "REFUND COMPLETED":
+      return "border-purple-500  text-fuchsia-700";
+    default:
+      return "";
+  }
+};
+const Status = ({ status }: StatusProps) => (
+  <td className={`mb-2 `}>
+    <span
+      className={` flex font-bold  justify-center items-start px-1 py-1.5 uppercase whitespace-nowrap border rounded-[32px]  ${getStatusClass(
+        status
+      )}`}
+    >
+      {status}
+    </span>
+  </td>
+);
 
 const OrderList: React.FC = () => {
   const { tableId } = useTableId();
